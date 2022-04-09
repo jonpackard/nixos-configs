@@ -47,13 +47,12 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim
-    wget
-    firefox
+    # These are all optional and not required for normal function.
     tmux
     nmap
     dig
     git
+    cryptsetup
   ];
 
   # List services that you want to enable:
@@ -70,4 +69,5 @@
   system.stateVersion = "21.11"; # Did you read the comment?
 
 }
+
 

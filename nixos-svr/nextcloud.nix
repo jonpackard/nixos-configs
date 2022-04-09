@@ -4,6 +4,7 @@
   # Enable Nextcloud
   services.nextcloud = {
     enable = true;
+    package = pkgs.nextcloud22;
     hostName = "nextcloud.packard.tech";
     datadir = "/storage/nextcloud";
     config = {
@@ -35,3 +36,4 @@
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 }
+
