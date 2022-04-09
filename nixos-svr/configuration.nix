@@ -8,13 +8,12 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./nextcloud.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "nixos-svr"; # Define your hostname.
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -30,9 +29,7 @@
   } ];
   networking.defaultGateway = "10.84.1.1";
   networking.nameservers = [ "1.1.1.1" ];
-  # networking.hosts = {
-  #   "10.84.1.10" = [ "nextcloud.packard.tech" ];
-  # };
+  networking.hostName = "nixos-svr"; # Define your hostname.
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -50,7 +47,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim
     wget
     firefox
     tmux
@@ -63,44 +60,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
-  # Enable Nextcloud
-  services.nextcloud = {
-    enable = true;
-    hostName = "nextcloud.packard.tech";
-    datadir = "/storage/nextcloud";
-    config = {
-      dbtype = "pgsql";
-      dbuser = "nextcloud";
-      dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
-      dbname = "nextcloud";
-      adminpassFile = "/home/secret/nextcloud-admin";
-      adminuser = "admin";
-    };
-  };
-
-  services.postgresql = {
-    enable = true;
-    ensureDatabases = [ "nextcloud" ];
-    ensureUsers = [
-     { name = "nextcloud";
-       ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
-     }
-    ];
-  };
-
-  # ensure that postgres is running *before* running the setup
-  systemd.services."nextcloud-setup" = {
-    requires = ["postgresql.service"];
-    after = ["postgresql.service"];
-  };
-
-
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
