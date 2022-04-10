@@ -19,6 +19,7 @@
 
   services.postgresql = {
     enable = true;
+    package = pkgs.postgresql_13;
     ensureDatabases = [ "nextcloud" ];
     ensureUsers = [
      { name = "nextcloud";
