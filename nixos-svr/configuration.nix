@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./nextcloud.nix
+      ./jellyfin.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
