@@ -61,6 +61,13 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  # Optional: Mount NFS share
+    fileSystems."/mnt/library" = {
+      device = "10.84.1.8:/mnt/user/library";
+      fsType = "nfs";
+      options = [ "x-systemd.automount" "noauto" ]; # lazy mounting
+    };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
