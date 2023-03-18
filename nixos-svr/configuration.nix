@@ -28,7 +28,7 @@
     address = "10.84.1.10";
     prefixLength = 24;
   } ];
-  networking.defaultGateway = "10.84.1.1";
+  networking.defaultGateway = "10.84.1.254";
   networking.nameservers = [ "1.1.1.1" ];
   networking.hostName = "nixos-svr"; # Define your hostname.
 
@@ -60,6 +60,10 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.openssh.extraConfig = ''
+    HostKeyAlgorithms ssh-rsa,ecdsa-sha2-nistp256,ssh-ed25519
+    PubkeyAcceptedAlgorithms ssh-rsa,ecdsa-sha2-nistp256,ssh-ed25519
+    '';
 
   # Optional: Mount NFS share
     fileSystems."/mnt/library" = {
@@ -74,7 +78,14 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "21.11"; # Did you read the comment?
+  system.stateVersion = "22.05"; # Did you read the comment?
+
+  services.cron.systemCronJobs = [
+    "* * * * *  jon sleep 00; /home/jon/checkworkpc.sh"
+    "* * * * *  jon sleep 15; /home/jon/checkworkpc.sh"
+    "* * * * *  jon sleep 30; /home/jon/checkworkpc.sh"
+    "* * * * *  jon sleep 45; /home/jon/checkworkpc.sh"
+  ];    
 
 }
 

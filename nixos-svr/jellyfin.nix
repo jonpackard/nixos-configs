@@ -2,6 +2,7 @@
 
 {
 
+
   services.jellyfin = {
     enable = true;
   };
