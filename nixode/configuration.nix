@@ -6,6 +6,12 @@
 
 { config, pkgs, ... }:
 
+let
+  # Allow for packages from nixos-unstable
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; };
+};
+
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -20,7 +26,7 @@
   # Define on which hard drive you want to install Grub.
   # boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
 
-  # networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "nixode"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -68,10 +74,10 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDD81PaVpMWLTJu/uvQsSSdsEn09Tdd//FluBGQHn+xYCAiyykl1JM0VfzphnSsNy04mRoOW99Mdvj2pUkXmoGCmF/ebpTymHZiuZBcWP/MIiWFDyM0Hdz56wG4WoqDr13wiAoI1YahwdlIwU+B8YVu6Pr6x2IilHxfzl79n9fYlVEsYZUcvZ3fAGt+ix8hNdyfcw0r/bIEFv2+D5IKhP16n3BwJUHHakDSTUBFumEjnbOf/sK2WNemzm9jgcinhfzG2WskOQR/Pt3VPUS4wK9MurFYg59MsPEa00EoraHeB6YnK8yWUmHD/veGmzDBK73crZrDrSaWQ5FbSh/Xatu3HzK2T5Y7Mn2HhajmYQFc5UgN41fF8O4Ft1dOmv5VeIH4y3mm00grmDcvvAU6fLUgWO/UBK0N0P1+3y0eRS30xaKQGDX1Ofn9l2CcVsAGeTHuq8ZTGLIA0UQ4tIMir47iVl2OTdY6RjcdSsZ9ikbdGJ64nh4dwc06/6bTck8Gw+0= jonathan@jon-tower" ];
-  #   packages = with pkgs; [
-  #     firefox
-  #     tree
-  #   ];
+    packages = with pkgs; [
+      git
+      tmux
+    ];
   };
 
   # List packages installed in system profile. To search, run:
@@ -108,6 +114,11 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  # Tailscale VPN
+  services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "both";
+  services.tailscale.package = unstable.tailscale;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
