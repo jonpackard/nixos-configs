@@ -4,8 +4,9 @@
 
 # Dependencies on distrobox:
 #   Arch Linux:
-#     pCloud (AppImage does not run in NixOS... libfuse issue?
+#     pCloud - (AppImage does not run in NixOS... libfuse issue? Tested 9 Sep 2023.
 #     nativefier - used to create electron apps for specific websites. Used AUR instead of the python packager.
+#     tgpt - "terminal gpt chat" - seems broken in NixOS unstable as of 13 Sep 2023.
 
 { config, pkgs, ... }:
 
@@ -115,14 +116,12 @@ in
       blender
       freecad
       podman-compose
-      unstable.distrobox # need unstable for nvidia flag as of Sep 2023
+      unstable.distrobox # Need unstable for nvidia flag as of 9 Sep 2023.
       appimage-run
   	  p7zip
   	  anydesk
       discord
       jellyfin-mpv-shim
-      unstable.tgpt
-      # pcloud # broken! using arch distrobox for now
     ];
   };
 
