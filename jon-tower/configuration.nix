@@ -2,6 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
+# Dependencies on distrobox:
+#   Arch Linux:
+#     pCloud (AppImage does not run in NixOS... libfuse issue?
+#     nativefier - used to create electron apps for specific websites. Used AUR instead of the python packager.
+
 { config, pkgs, ... }:
 
 let
@@ -116,6 +121,7 @@ in
   	  anydesk
       discord
       jellyfin-mpv-shim
+      unstable.tgpt
       # pcloud # broken! using arch distrobox for now
     ];
   };
