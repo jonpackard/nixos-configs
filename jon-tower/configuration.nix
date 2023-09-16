@@ -122,6 +122,7 @@ in
   	  anydesk
       discord
       jellyfin-mpv-shim
+      gamemode
     ];
   };
 
