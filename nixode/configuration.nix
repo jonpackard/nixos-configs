@@ -8,6 +8,7 @@
 
 let
   # Allow for packages from nixos-unstable
+  # Ref: https://nixos.wiki/wiki/Nix_channels
   unstable = import <nixos-unstable> { config = { allowUnfree = true; };
 };
 
@@ -90,6 +91,8 @@ in
     mtr
     sysstat
     # End Linode specific packages
+    neofetch # Just for fun!
+    fortune # Just for fun!
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -108,6 +111,10 @@ in
     # Uncomment to allow SSH root login. Must be changed after initial setup!
     # settings.PermitRootLogin = "yes";
   };
+
+  # Enable fail2ban - helps prevent brute force attacks
+  services.fail2ban.enable = true;
+  services.fail2ban.bantime-increment.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
