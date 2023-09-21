@@ -76,6 +76,10 @@ in
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.daemon.config = {
+    default-sample-rate = 48000; # SteamVR sound fix
+    alternate-sample-rate = 48000; # SteamVR sound fix
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -122,7 +126,10 @@ in
   	  anydesk
       discord
       jellyfin-mpv-shim
-      gamemode
+      fortune
+      neofetch
+      vlc
+      lighthouse-steamvr # Power management for SteamVR lighthouses
     ];
   };
 
@@ -134,6 +141,8 @@ in
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     fuse # needed by pcloud
+    libimobiledevice # Needed for iPhone integration
+    ifuse # Needed for iPhone integration
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -163,6 +172,8 @@ in
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
   
+  programs.gamemode.enable = true;
+
   # Tailscale VPN
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "both";
@@ -196,7 +207,7 @@ in
     # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
     # Only available from driver 515.43.04+
     # Do not disable this unless your GPU is unsupported or if you have a good reason to.
-    open = true;
+    open = false; #changed to false to troubleshoot SteamVR
 
     # Enable the Nvidia settings menu,
     # accessible via `nvidia-settings`.
@@ -219,6 +230,22 @@ in
         defaultNetwork.settings.dns_enabled = true;
       };
     };
+
+  systemd.coredump.enable = true; # Enables debugging applications.
+  
+  boot.kernelPatches = [ { # Enables kernel crash dumps.
+    name = "crashdump-config";
+    patch = null;
+    extraConfig = ''
+            CRASH_DUMP y
+            DEBUG_INFO y
+            PROC_VMCORE y
+            LOCKUP_DETECTOR y
+            HARDLOCKUP_DETECTOR y
+          '';
+    } ];
+
+  services.usbmuxd.enable = true; # Needed for iPhone integration
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
