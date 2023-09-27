@@ -13,6 +13,8 @@
 let
   # Allow for packages from nixos-unstable
   unstable = import <nixos-unstable> { config = { allowUnfree = true; };
+  # Allow for packages from nixos-22.11
+  #oldstable2211 = import <nixos-22.11> { config = { allowUnfree = true; }; #syntax errors?
 };
 
 in 
@@ -29,6 +31,12 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  
+  # Disable USB ethernet in dock. Was causing kernel crashes when both onboard and USB NICs were connected.
+  boot.blacklistedKernelModules = [
+    "r8152"
+    "r8153_ecm"
+  ];
 
   fileSystems = {
     "/".options = [ "compress=zstd" ];
@@ -130,6 +138,7 @@ in
       neofetch
       vlc
       lighthouse-steamvr # Power management for SteamVR lighthouses
+      #oldstable2211.pcloud # Install pcloud using the nixos 22.11 channel #problem with importing 22.11
     ];
   };
 
@@ -207,7 +216,7 @@ in
     # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
     # Only available from driver 515.43.04+
     # Do not disable this unless your GPU is unsupported or if you have a good reason to.
-    open = false; #changed to false to troubleshoot SteamVR
+    open = false; # SteamVR had terrible framerate with this set to true!
 
     # Enable the Nvidia settings menu,
     # accessible via `nvidia-settings`.
@@ -233,18 +242,6 @@ in
 
   systemd.coredump.enable = true; # Enables debugging applications.
   
-  boot.kernelPatches = [ { # Enables kernel crash dumps.
-    name = "crashdump-config";
-    patch = null;
-    extraConfig = ''
-            CRASH_DUMP y
-            DEBUG_INFO y
-            PROC_VMCORE y
-            LOCKUP_DETECTOR y
-            HARDLOCKUP_DETECTOR y
-          '';
-    } ];
-
   services.usbmuxd.enable = true; # Needed for iPhone integration
 
   # Copy the NixOS configuration file and link it from the resulting system
