@@ -89,7 +89,7 @@
           # Import the configuration.nix here, so that the
           # old configuration file can still take effect.
           # Note: configuration.nix itself is also a Nix Module,
-          ./configuration.nix
+          ./hosts/nixode/configuration.nix
         ];
       };
     };
