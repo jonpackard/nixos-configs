@@ -6,13 +6,13 @@
 
 { config, pkgs, ... }:
 
-let
-  # Allow for packages from nixos-unstable
-  # Ref: https://nixos.wiki/wiki/Nix_channels
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; };
-};
+#let
+#  # Allow for packages from nixos-unstable
+#  # Ref: https://nixos.wiki/wiki/Nix_channels
+#  # unstable = import <nixos-unstable> { config = { allowUnfree = true; };
+#};
 
-in
+#in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -132,7 +132,7 @@ in
   # Tailscale VPN
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "both";
-  services.tailscale.package = unstable.tailscale;
+  # services.tailscale.package = unstable.tailscale;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
