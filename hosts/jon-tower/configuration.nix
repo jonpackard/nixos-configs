@@ -10,14 +10,6 @@
 
 { config, pkgs, ... }:
 
-let
-  # Allow for packages from nixos-unstable
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; };
-  # Allow for packages from nixos-22.11
-  #oldstable2211 = import <nixos-22.11> { config = { allowUnfree = true; }; #syntax errors?
-};
-
-in 
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -128,7 +120,7 @@ in
       blender
       freecad
       podman-compose
-      unstable.distrobox # Need unstable for nvidia flag as of 9 Sep 2023.
+      distrobox
       appimage-run
   	  p7zip
   	  anydesk
@@ -138,7 +130,6 @@ in
       neofetch
       vlc
       lighthouse-steamvr # Power management for SteamVR lighthouses
-      #oldstable2211.pcloud # Install pcloud using the nixos 22.11 channel #problem with importing 22.11
     ];
   };
 
@@ -186,7 +177,6 @@ in
   # Tailscale VPN
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "both";
-  services.tailscale.package = unstable.tailscale;
 
   # ==START NVIDIA==
 
