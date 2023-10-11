@@ -126,14 +126,53 @@
       podman-compose
       distrobox
       appimage-run
-  	  p7zip
-  	  anydesk
+      p7zip
+      anydesk
       discord
       jellyfin-mpv-shim
       fortune
       neofetch
       vlc
       lighthouse-steamvr # Power management for SteamVR lighthouses
+    ];
+  };
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.brandon = {
+    isNormalUser = true;
+    # extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+      firefox
+      tree
+      remmina
+      tmux
+      nmap
+      bitwarden
+      cryptomator
+      element
+      notepadqq
+      wol
+      git
+      vscodium
+      unigine-superposition
+      element-desktop
+      prusa-slicer
+      cura
+      blender
+      freecad
+      podman-compose
+      distrobox
+      appimage-run
+      p7zip
+      anydesk
+      discord
+      jellyfin-mpv-shim
+      fortune
+      neofetch
+      vlc
+      lighthouse-steamvr # Power management for SteamVR lighthouses
+      #minecraft
+      prismlauncher
     ];
   };
 
